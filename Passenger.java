@@ -43,22 +43,6 @@ public abstract class Passenger {
 		return phone;
 	}
 	
-	private void printLuggages() {
-		System.out.println("=================");
-		for (Luggage l : luggages) {
-			System.out.println(l);
-		}
-		System.out.println("=================");
-	}
-	
-	private void printBookings() {
-		System.out.println("=================");
-		for (Booking b: bookings) {
-			System.out.println(b);
-		}
-		System.out.println("=================");
-	}
-	
 	public ArrayList<Luggage> getLuggages() {
 		return luggages;
 	}
@@ -77,11 +61,57 @@ public abstract class Passenger {
 	
 	
 	
+//	setters
+	public void setPassengerId(int id) {
+		this.passengerId = id;
+	}
+	
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
+	public void setPassportNo(String passportNo) {
+		this.passportNo = passportNo;
+	}
+	
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
+	public void setLuggages(ArrayList<Luggage> luggages) {
+		this.luggages = luggages;
+	}
+	
+	public void setBookings(ArrayList<Booking> bookings) {
+		this.bookings = bookings;
+	}
+	
+	
 	
 //	methods
 //	public void addLuggage(Luggage l) {
 //		this.luggages.add(l);
 //	}
+	
+	private void printLuggages() {
+		System.out.println("=================");
+		for (Luggage l : luggages) {
+			System.out.println(l);
+		}
+		System.out.println("=================");
+	}
+	
+	private void printBookings() {
+		System.out.println("=================");
+		for (Booking b: bookings) {
+			System.out.println(b);
+		}
+		System.out.println("=================");
+	}
 	
 	public abstract void addLuggage(Luggage l);
 

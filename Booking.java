@@ -29,6 +29,24 @@ public class Booking {
 		return isCheckedIn;
 	}
 	
+//	setters
+	public void setBookingId(int id) {
+		this.bookingId = id;
+	}
+	
+	public void setPassenger(Passenger p) {
+		this.passenger = p;
+	}
+	
+	public void setFlight(Flight f) {
+		this.flight = f;
+	}
+	
+	public void setIsCheckedIn(boolean b) {
+		this.isCheckedIn = b;
+	}
+	
+	
 	
 //	methods
 	public void checkIn() {

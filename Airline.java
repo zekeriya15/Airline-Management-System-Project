@@ -8,7 +8,7 @@ public class Airline {
 	private static ArrayList<Passenger> passengers = new ArrayList<>();
 	
 
-	
+//	getters
 	public static String getName() {
 		return name;
 	}
@@ -25,6 +25,8 @@ public class Airline {
 		passengers.add(p);
 	}
 	
+	
+//	getters
 	public static ArrayList<Aircraft> getAircrafts() {
 		return planes;
 	}
@@ -64,23 +66,23 @@ public class Airline {
 	public static void printAllFlights() {
 		ArrayList<Flight> flights = getFlights();
 		
-		System.out.println("=================");
+		System.out.println("\n-----------------");
+		System.out.println("Flight Id\tFlight No\tAircraft\tRoute\t\tDeparture Time\t\t\tArrival Time\t\t\tStatus");
 		for (Flight f : flights) {
-			System.out.println(f);
-			System.out.println();
+			f.print();
 		}
-		System.out.println("=================");
+		System.out.println("\n-----------------");
 	}
 	
 	public static void printAllAircrafts() {
 		ArrayList<Aircraft> planes = getAircrafts();
 		
-		System.out.println("=================");
+		System.out.println("\n-----------------");
+		System.out.println("Aircraft Id\tModel\t\tCapacity");
 		for (Aircraft plane : planes) {
-			System.out.println(plane);
-			System.out.println();
+			plane.print();
 		}
-		System.out.println("=================");
+		System.out.println("\n-----------------");
 	}
 	
 	public static void printAllPassengers() {

@@ -8,6 +8,7 @@ public class Luggage {
 		this.type = type;
 	}
 	
+//	getters
 	public int getLuggageId() {
 		return luggageId;
 	}
@@ -16,6 +17,7 @@ public class Luggage {
 		return type;
 	}
 	
+//	setters
 	public void setLuggageId(int id) {
 		this.luggageId = id;
 	}

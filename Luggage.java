@@ -1,15 +1,36 @@
 
 public class Luggage {
-	private int luggageId;
-	private String type;
+	private static final String CODE = "LG";
 	
-	public Luggage(int luggageId, String type) {
-		this.luggageId = luggageId;
+	private String luggageId;
+	private String type;
+	private double weight;
+	
+	public Luggage(String type, double weight, Passenger p) {
+		this.luggageId = generateId(p);
 		this.type = type;
+		this.weight = weight;
+	}
+	
+	private static String generateId(Passenger p) {
+		int id = 0;
+		
+		if (p.getLuggages().size() != 0) {
+			Luggage lastIndexValue = p.getLuggages().get(p.getLuggages().size() - 1);
+			String lastLuggageId = lastIndexValue.getLuggageId();
+			
+			String numValue = lastLuggageId.substring(lastLuggageId.lastIndexOf(CODE) + CODE.length(), lastLuggageId.length());
+			int numValueParsed = Integer.parseInt(numValue);
+			
+			id = ++numValueParsed;
+		}
+		
+		return p.getPassengerId() + CODE + id;
+		
 	}
 	
 //	getters
-	public int getLuggageId() {
+	public String getLuggageId() {
 		return luggageId;
 	}
 	
@@ -17,13 +38,21 @@ public class Luggage {
 		return type;
 	}
 	
+	public double getWeight() {
+		return weight;
+	}
+	
 //	setters
-	public void setLuggageId(int id) {
+	public void setLuggageId(String id) {
 		this.luggageId = id;
 	}
 	
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	public void setWeight(double weight) {
+		this.weight = weight;
 	}
 	
 	

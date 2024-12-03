@@ -207,7 +207,7 @@ public class Flight implements Comparable<Flight> {
 		
 		System.out.println(flightId + "\t\t" + flightNo + "\t\t" + plane.getAircraftId() + " " + plane.getModel() + "\t" +
 				origin + " - " + destination + "\t" + departureTime.format(formatter) +"\t" + arrivalTime.format(formatter) + "\t" +
-				status);
+				status + "\t\t" + bookings.size() + "/" + plane.getCapacity());
 	}
 	
 	@Override

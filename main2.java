@@ -22,6 +22,18 @@ public class main2 {
 		Airline.printAllFlights();
 		
 		f2.delayFlight();
+		
+		Passenger p1 = new Economy("Me", "Myself", "CA23098", "01998763");
+		Passenger p2 = new Business("Yakup", "Yakamoz", "TR23098", "01998763");
+	
+		p2.addLuggage(new Luggage("suitcase", 30, p2));
+		p1.addLuggage(new Luggage("suitcase", 15, p1));
+		p1.addLuggage(new Luggage("suitcase", 17, p1));
+
+		
+		Airline.printAllPassengers();
+		
+		p2.printLuggages();
 	}
 
 }

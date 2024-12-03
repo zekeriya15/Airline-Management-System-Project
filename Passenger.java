@@ -1,16 +1,18 @@
 import java.util.ArrayList;
 
 public abstract class Passenger {
-	private int passengerId;
-	private String firstName;
-	private String lastName;
-	private String passportNo;
-	private String phone;
+	private static final String CODE  = "PS";
+	
+	protected String passengerId;
+	protected String firstName;
+	protected String lastName;
+	protected String passportNo;
+	protected String phone;
 	protected ArrayList<Luggage> luggages;
 	private ArrayList<Booking> bookings;
 	
-	public Passenger(int passengerId, String firstName, String lastName, String passportNo, String phone) {
-		this.passengerId = passengerId;
+	public Passenger(String firstName, String lastName, String passportNo, String phone) {
+		this.passengerId = CODE + generateId();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.passportNo = passportNo;
@@ -21,9 +23,24 @@ public abstract class Passenger {
 		Airline.addPassenger(this);
 	}
 	
+	private static int generateId() {
+		int id = 0;
+		
+		if (Airline.getPassengers().size() != 0) {
+			Passenger lastIndexValue = Airline.getPassengers().get(Airline.getPassengers().size() - 1);
+			String lastPassengerId = lastIndexValue.getPassengerId();
+			String numValue = lastPassengerId.substring(CODE.length(), lastPassengerId.length());
+			int numValueParsed = Integer.parseInt(numValue);
+			
+			id = ++numValueParsed;
+		}
+		
+		return id;
+	}
+	
 	
 //	getters
-	public int getPassengerId() {
+	public String getPassengerId() {
 		return passengerId;
 	}
 	
@@ -62,7 +79,7 @@ public abstract class Passenger {
 	
 	
 //	setters
-	public void setPassengerId(int id) {
+	public void setPassengerId(String id) {
 		this.passengerId = id;
 	}
 	
@@ -97,7 +114,7 @@ public abstract class Passenger {
 //		this.luggages.add(l);
 //	}
 	
-	private void printLuggages() {
+	public void printLuggages() {
 		System.out.println("=================");
 		for (Luggage l : luggages) {
 			System.out.println(l);
@@ -113,17 +130,20 @@ public abstract class Passenger {
 		System.out.println("=================");
 	}
 	
+	
 	public abstract void addLuggage(Luggage l);
 
 	
 	public void books(int bookingId, Flight flight) {
 		Booking b = new Booking(bookingId, this, flight);
-		this.bookings.add(b);
-		
 		flight.addBooking(b);
+		
+		this.bookings.add(b);
 		
 		System.out.println(firstName + " " + lastName+ "Succesfully booked flight " + flight.getFlightNo() + " " + 
 					flight.getOrigin() + " - " + flight.getDestination());
+		
+		return;
 	}
 	
 	public void books(int bookingId, String flightNo) {
@@ -131,9 +151,9 @@ public abstract class Passenger {
 		for (Flight f : Airline.getFlights()) {
 			if (f.getFlightNo().equals(flightNo)) {
 				Booking b = new Booking(bookingId, this, f);
-				this.bookings.add(b);
-				
 				f.addBooking(b);
+				
+				this.bookings.add(b); 
 				
 				System.out.println(firstName + " " + lastName + " has succesfully booked flight " + f.getFlightNo() + ", " + 
 						f.getOrigin() + " - " + f.getDestination());
@@ -195,30 +215,45 @@ public abstract class Passenger {
 //		}
 //	}
 	
+
+	public void print() {
+		String passengerClass = "";
+		if (this instanceof Economy) {
+			passengerClass = "Economy Class";
+		} else if (this instanceof Business) {
+			passengerClass = "Business Class";
+		} else if (this instanceof First) {
+			passengerClass = "First Class";
+		}
+		
+		System.out.println(passengerId + "\t\t" + firstName + "\t\t" + lastName + "\t\t" + passportNo + "\t\t" +
+						phone + "\t" + passengerClass + "\t\t" + luggages.size());
+		
+	}
 	
 	
 //	methods
-	public void print() {
-		String pasenggerClass = "";
-		if (this instanceof Economy) {
-			pasenggerClass = "Economy Class";
-		} else if (this instanceof Business) {
-			pasenggerClass = "Business Class";
-		} else if (this instanceof First) {
-			pasenggerClass = "First Class";
-		}
-		
-		
-		System.out.println("id: " + passengerId +
-				"\nFirst Name: " + firstName + 
-				"\nLast Name: " + lastName +
-				"\nPassenger Class: " + pasenggerClass +
-				"\nPassport Number: " + passportNo +
-				"\nPhone Number: " + phone +
-				"\nNumber of Luggages: " + this.getNumOfLuggages());
-		this.printLuggages();
-		
-		System.out.println("Number of Bookings: " + this.getNumOfBookings());
-		this.printBookings();
-	}
+//	public void printt() {
+//		String pasenggerClass = "";
+//		if (this instanceof Economy) {
+//			pasenggerClass = "Economy Class";
+//		} else if (this instanceof Business) {
+//			pasenggerClass = "Business Class";
+//		} else if (this instanceof First) {
+//			pasenggerClass = "First Class";
+//		}
+//		
+//		
+//		System.out.println("id: " + passengerId +
+//				"\nFirst Name: " + firstName + 
+//				"\nLast Name: " + lastName +
+//				"\nPassenger Class: " + pasenggerClass +
+//				"\nPassport Number: " + passportNo +
+//				"\nPhone Number: " + phone +
+//				"\nNumber of Luggages: " + this.getNumOfLuggages());
+//		this.printLuggages();
+//		
+//		System.out.println("Number of Bookings: " + this.getNumOfBookings());
+//		this.printBookings();
+//	}
 }

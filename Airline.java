@@ -56,18 +56,19 @@ public class Airline {
 	public static void findFlightsByRoute(String origin, String destination) {
 		ArrayList<Flight> flights = getFlightsByRoute(origin, destination);
 		
-		System.out.println("=================");
+		System.out.println("\n-----------------");
+		System.out.println("Flight Id\tFlight No\tAircraft\tRoute\t\t\tDeparture Time\t\t\tArrival Time\t\t\tStatus\t\tSeats Taken");
 		for (Flight f : flights) {
-			System.out.println(f);
+			f.print();
 		}
-		System.out.println("=================");
+		System.out.println("\n-----------------");
 	}
 	
 	public static void printAllFlights() {
 		ArrayList<Flight> flights = getFlights();
 		
 		System.out.println("\n-----------------");
-		System.out.println("Flight Id\tFlight No\tAircraft\tRoute\t\tDeparture Time\t\t\tArrival Time\t\t\tStatus\t\tSeats Taken");
+		System.out.println("Flight Id\tFlight No\tAircraft\tRoute\t\t\tDeparture Time\t\t\tArrival Time\t\t\tStatus\t\tSeats Taken");
 		for (Flight f : flights) {
 			f.print();
 		}

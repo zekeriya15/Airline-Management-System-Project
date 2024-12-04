@@ -95,7 +95,7 @@ public abstract class Booking {
 		}
 		
 		System.out.println(bookingId + "\t\t" + flight.getFlightNo() + "\t\t" + flight.getOrigin() + " - " + flight.getDestination() +
-				"\t" + passengerClass + "\t\t\t" + luggages.size());
+				"\t" + passengerClass + "\t\t\t" + luggages.size() + "\t\t" + isCheckedIn);
 	}
 	
 	@Override

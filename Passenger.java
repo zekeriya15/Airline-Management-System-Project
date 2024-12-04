@@ -115,15 +115,6 @@ public  class Passenger {
 //		this.luggages.add(l);
 //	}
 	
-	public void printLuggages() {
-		System.out.println("=================");
-		for (Luggage l : luggages) {
-			System.out.println(l);
-		}
-		System.out.println("=================");
-	}
-	
-	
 	
 	public void addLuggageToList(Luggage l) {
 		this.luggages.add(l);
@@ -142,10 +133,11 @@ public  class Passenger {
 //		return;
 //	}
 	
+	
 	public void books(String flightNo, Scanner s) {
 		
 		for (Flight f : Airline.getFlights()) {
-			if (f.getFlightNo().equals(flightNo)) {
+			if (f.getFlightNo().equalsIgnoreCase(flightNo)) {
 		
 				Booking b = null;
 				String passengerClass = "";
@@ -176,13 +168,11 @@ public  class Passenger {
 					
 				} while (b == null);
 				
-				
 				this.bookings.add(b); 
 				f.addBooking(b);
 				
-				
-				System.out.println(firstName + " " + lastName + " has succesfully booked flight " + f.getFlightNo() + ", " + 
-						f.getOrigin() + " - " + f.getDestination() + " with " + passengerClass);
+				System.out.println("\n" + firstName + " " + lastName + " has succesfully booked flight " + f.getFlightNo() + ", " + 
+						f.getOrigin() + " - " + f.getDestination() + " with " + passengerClass + " Class\n");
 				
 				return;
 			}
@@ -224,14 +214,13 @@ public  class Passenger {
 	                }
 	                
 	                b.addLuggage(new Luggage(type, weight, this));
-	                System.out.println("Luggage added successfully.");
 	                
 	                System.out.print("Continue adding luggage? (Y/N): ");
 	                option = s.next().toUpperCase().charAt(0); // Normalize input to uppercase
 	            }
 	            
 	            b.checkIn();
-	            System.out.println("Checked in successfully.");
+	            System.out.println("\n" + firstName + " " + lastName +" has checked in successfully.\n");
 	            return; // Exit the method after checking in
 	        }
 	    }
@@ -266,14 +255,25 @@ public  class Passenger {
 		}
 		
 		// if the loop has serached thru the end of list it means that the if statement didnt get touched and the fligh actually desnt exist
-		System.out.println("No booking found for flight " + flight.getFlightNo() );
+		System.out.println("\tNo booking found for flight " + flight.getFlightNo() + "\t");
 	}
 	
 	public void printBookings() {
 		System.out.println("\n--------------------");
-		System.out.println("Booking Id\tFlight No\tRoute\t\tPassenger Class\t\tLuggages");
+		System.out.println("Booking Id\tFlight No\tRoute\t\tPassenger Class\t\tLuggages\tChecked In?");
 		for (Booking b: bookings) {
 			b.print();
+		}
+		System.out.println("\n--------------------");
+	}
+	
+	public void printLuggages() {
+		System.out.println("\n--------------------");
+		System.out.println("Luggage Id\tType\t\tWeight\t\tFlight Id");
+		for (Booking b : this.bookings) {
+			for (Luggage l : b.getLuggages()) {
+				System.out.println(l.getLuggageId() + "\t\t" + l.getType() + "\t\t" + l.getWeight() + " kg\t\t" + b.getFlight().getFlightId());
+			}
 		}
 		System.out.println("\n--------------------");
 	}

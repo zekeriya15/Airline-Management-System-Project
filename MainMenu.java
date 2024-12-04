@@ -22,7 +22,7 @@ public class MainMenu {
 			System.out.println("9. Get list of passengers");
 			System.out.println("10. Get list of checked in passenger");
 			System.out.println("11. Get list of all available flights");
-			System.out.println("12. Get all flights by route");
+			System.out.println("12. Find flights by route");
 			System.out.println("13. Get list of all aircrafts");
 			System.out.println("0. Quit");
 			
@@ -43,28 +43,34 @@ public class MainMenu {
 				cancelFlight();
 				break;
 			case 5:
-//				addPassenger();
+				addPassenger();
 				break;
 			case 6:
-//				addLuggageForPassenger();
+				bookFlight();
 				break;
-				
-			
-			case 10:
+			case 7:
+				checkIn();
+				break;
+			case 8:
+				getPassengerLuggages();
+				break;
+			case 9:
 				Airline.printAllPassengers();
 				break;
-			case 12:
+			case 10:
+				printCheckedInPassengers();
+			case 11:
 				Airline.printAllFlights();
 				break;
-				
-			case 14:
+			case 12:
+				printFlightsByRoute();
+				break;
+			case 13:
 				Airline.printAllAircrafts();
 				break;
-				
 			case 0:
 				running = false;
 				break;
-				
 			default:
 				System.out.println("Input is incorrect");
 			}
@@ -144,7 +150,7 @@ public class MainMenu {
 		}
 		
 		for (Flight f : Airline.getFlights()) {
-			if (f.getFlightNo().equals(flightNo)) {
+			if (f.getFlightNo().equalsIgnoreCase(flightNo)) {
 				f.delayFlight();
 				return;
 			}
@@ -154,7 +160,7 @@ public class MainMenu {
 	}
 	
 	private static void cancelFlight() {
-		System.out.print("Enter Flight Number (-1 to show all flight):");
+		System.out.print("Enter Flight Number (-1 to show all flights): ");
 		String flightNo = s.nextLine();
 		
 		if (flightNo.equals("-1")) {
@@ -165,7 +171,7 @@ public class MainMenu {
 		}
 		
 		for (Flight f : Airline.getFlights()) {
-			if (f.getFlightNo().equals(flightNo)) {
+			if (f.getFlightNo().equalsIgnoreCase(flightNo)) {
 				f.cancelFlight();
 				return;
 			}
@@ -174,97 +180,133 @@ public class MainMenu {
 		System.out.println("Flight " + flightNo + " isnt found");
 	}
 	
-//	private static void addPassenger() {
-//		System.out.print("Enter passenger's first name: ");
-//		String firstName = s.nextLine();
-//		
-//		System.out.print("Enter passenger's last name: ");
-//		String lastName = s.nextLine();
-//		
-//		System.out.print("Enter passenger's passport number: ");
-//		String passportNo = s.nextLine();
-//		
-//		System.out.print("Enter passenger's phone number: ");
-//		String phone = s.nextLine();
-//		
-//		Passenger p;
-//		
-//		while (true) {
-//			System.out.println("Choose class:\n1. First class\n2.Business class\n3. Economy class");
-//			int passengerClass = s.nextInt();
-//			
-//			switch (passengerClass) {
-//			case 1:
-//				p = new First(firstName, lastName, passportNo, phone);
-//				System.out.println("Passenger added to First class successfully");
-//				break;
-//			case 2:
-//				p = new Business(firstName, lastName, passportNo, phone);
-//				System.out.println("Passenger added to Business class successfully");
-//				break;
-//			case 3:
-//				p = new Economy(firstName, lastName, passportNo, phone);
-//				System.out.println("Passenger added to Economy class successfully");
-//				break; // exit switch
-//			default:
-//				System.out.println("Incorrect input");
-//				continue; // continue
-//			}
-//			break; // exit while loop after a valid choice
-//		}
-//	}
-//	
-//	public static void addLuggageForPassenger() {
-//		System.out.print("Enter Passenger Id (-1 to show all passengers): ");
-//		String passengerId = s.nextLine();
-//		
-//		if (passengerId.equals("-1")) {
-//			Airline.printAllPassengers();
-//			
-//			passengerId = s.nextLine();
-//		}
-//		
-//		for (Passenger p : Airline.getPassengers()) {
-//			if (p.getPassengerId().equalsIgnoreCase(passengerId)) {
-//				
-//				char cont;
-//				
-//				do {
-//					System.out.print("Enter luggage type (ex. suitcase, carry-on): ");
-//					String type = s.nextLine();
-//					
-//					double weight = 0;
-//	                boolean validWeight = false;
-//	                
-//	                while (!validWeight) {
-//	                    System.out.print("Enter weight (in kg): ");
-//	                    
-//	                    if (s.hasNextDouble()) {
-//	                        weight = s.nextDouble(); s.nextLine();  // Clear the buffer
-//	                        if (weight > 0) {
-//	                            validWeight = true;
-//	                        } else {
-//	                            System.out.println("Weight must be a positive value.");
-//	                        }
-//	                    } else {
-//	                        System.out.println("Invalid weight input. Please enter a numeric value.");
-//	                        s.nextLine();  // Clear the invalid input
-//	                    }
-//	                }
-//					
-//					p.addLuggage(new Luggage(type, weight, p));
-//					
-//					System.out.print("Continue adding luggage? (Y/N)");
-//					cont = s.next().charAt(0);
-//					
-//				} while (cont == 'y' || cont == 'Y');
-//				
-//				return;
-//				
-//			}
-//		}
-//		
-//		System.out.println("Passenger Id " + passengerId + " isnt found");
-//	}
+	private static void addPassenger() {
+		System.out.print("Enter passenger's first name: ");
+		String firstName = s.nextLine();
+		
+		System.out.print("Enter passenger's last name: ");
+		String lastName = s.nextLine();
+		
+		System.out.print("Enter passenger's passport number: ");
+		String passportNo = s.nextLine();
+		
+		System.out.print("Enter passenger's phone number: ");
+		String phone = s.nextLine();
+		
+		Passenger p = new Passenger(firstName, lastName, passportNo, phone);
+		
+		System.out.println("\nPassenger added successfully\n");
+	}
+
+	private static void bookFlight() {
+		System.out.print("Enter Passenger Id (-1 to show all passengers): ");
+		String passengerId = s.nextLine();
+		
+		if (passengerId.equals("-1")) {
+			Airline.printAllPassengers();
+			
+			System.out.print("Enter PassengerId: ");
+			passengerId = s.nextLine();
+		}
+		
+		System.out.print("Enter Flight No (-1 to show all flights): ");
+		String flightNo = s.nextLine();
+		
+		if (flightNo.equals("-1")) {
+			Airline.printAllFlights();
+			
+			System.out.print("Enter Flight No: ");
+			flightNo = s.nextLine();
+		}
+		
+		for (Passenger p : Airline.getPassengers()) {
+			if (p.getPassengerId().equalsIgnoreCase(passengerId)) {
+				p.books(flightNo, s);
+				
+				return;
+			}
+		}
+		
+		System.out.println("\nPassenger Id " + passengerId + " isnt found\n");
+	}
+	
+	public static void checkIn() {
+		System.out.print("Enter Passenger Id (-1 to show all passengers): ");
+		String passengerId = s.nextLine();
+		
+		if (passengerId.equals("-1")) {
+			Airline.printAllPassengers();
+			
+			System.out.print("Enter Passenger Id: ");
+			passengerId = s.nextLine();
+		}
+		
+		for (Passenger p : Airline.getPassengers()) {
+			if (p.getPassengerId().equalsIgnoreCase(passengerId)) {
+				p.printBookings();
+				
+				System.out.print("Enter Booking Id: ");
+				String bookingId = s.nextLine();
+				
+				p.checkIn(bookingId, s);
+				return;
+			}
+		}
+		
+		System.out.println("\nPassenger Id " + passengerId + " isnt found\n");
+	}
+	
+	private static void getPassengerLuggages() {
+		System.out.print("Enter Passenger Id (-1 to show all passengers): ");
+		String passengerId = s.nextLine();
+		
+		if (passengerId.equals("-1")) {
+			Airline.printAllPassengers();
+			
+			System.out.print("Enter Passenger Id: ");
+			passengerId = s.nextLine();
+		}
+		
+		for (Passenger p : Airline.getPassengers()) {
+			if (p.getPassengerId().equalsIgnoreCase(passengerId)) {
+				p.printLuggages();
+				return;
+			}
+		}
+		
+		System.out.println("\nPassenger Id " + passengerId + " isnt found\n");
+	}
+	
+	private static void printCheckedInPassengers() {
+		System.out.print("Enter Flight No: (-1 to show all flights): ");
+		String flightNo = s.nextLine();
+		
+		if (flightNo.equals("-1")) {
+			Airline.printAllFlights();
+			
+			System.out.print("Enter Flight No: ");
+			flightNo = s.nextLine();
+		}
+		
+		for (Flight f : Airline.getFlights()) {
+			if (f.getFlightNo().equalsIgnoreCase(flightNo)) {
+				f.printCheckedInPassengers();
+				return;
+			}
+		}
+		
+		System.out.println("\nFlight No " + flightNo + " isnt found");
+	}
+	
+	private static void printFlightsByRoute() {
+		System.out.print("Enter Origin: ");
+		String origin = s.nextLine();
+		
+		System.out.print("Enter Destination: ");
+		String destination = s.nextLine();
+		
+		Airline.findFlightsByRoute(origin, destination);
+	}
+	
 
 }

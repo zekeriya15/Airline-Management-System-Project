@@ -168,7 +168,7 @@ public class Flight implements Comparable<Flight> {
 		ArrayList<Passenger> checkedInPassengers = new ArrayList<>();
 		
 		for (Booking b : this.bookings) {
-			if (b.isCheckedIn()) {
+			if (b.isCheckedIn) {
 				checkedInPassengers.add(b.getPassenger());
 			}
 		}
@@ -179,13 +179,29 @@ public class Flight implements Comparable<Flight> {
 	public void printCheckedInPassengers() {
 		ArrayList<Passenger> checkedInPassengers = this.getCheckedInPassengers();
 		
-		System.out.println("Total checked in passengers: " + checkedInPassengers.size());
+		System.out.println("\nTotal checked in passengers: " + checkedInPassengers.size() + "/" + this.bookings.size() + "\n");
 		
-		for (Passenger p : checkedInPassengers) {
-			System.out.println("=================");
-//			p.print();
-			System.out.println("=================");
+		System.out.println("\n--------------------");
+		System.out.println("Passenger Id\tFirst Name\tLast Name\tPassport No\tPhone\t\tClass" );
+		for (Booking b : this.bookings) {
+			if (b.isCheckedIn) {
+				
+				Passenger p = b.getPassenger();
+				String bookingClass = "";
+				
+				if (b instanceof First) {
+					bookingClass = "First Class";
+				} else if (b instanceof Business) {
+					bookingClass = "Business Class";
+				} else if (b instanceof Economy) {
+					bookingClass = "Economy Class";
+				}
+				
+				System.out.println(p.getPassengerId() + "\t\t" + p.getfirstName() + "\t\t" + p.getLastName() + "\t\t" + 
+						p.getPassportNo() + "\t\t" + p.getPhone() + "\t" + bookingClass);
+			}
 		}
+		System.out.println("\n--------------------");
 	}
 	
 	public void cancelFlight() {

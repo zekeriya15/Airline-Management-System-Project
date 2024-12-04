@@ -8,10 +8,10 @@ public class Business extends Booking {
 		super(p, f);
 	}
 	
-
+	@Override
 	public void addLuggage(Luggage l) {
 		double currentWeight = 0;
-		if (!passenger.getLuggages().isEmpty() && !this.luggages.isEmpty()) {
+		if (!this.luggages.isEmpty()) {
 			for (Luggage lu : this.luggages) {
 				currentWeight += lu.getWeight();
 			}

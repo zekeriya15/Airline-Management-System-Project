@@ -89,7 +89,7 @@ public class Airline {
 		ArrayList<Passenger> passengers = getPassengers();
 		
 		System.out.println("\n-----------------");
-		System.out.println("Passenger Id\tFirst Name\tLast Name\tPassport No\tPhone\t\tClass\t\t\tLuggages");
+		System.out.println("Passenger Id\tFirst Name\tLast Name\tPassport No\tPhone\t\tBookings");
 		for (Passenger p : passengers) {
 			p.print();
 		}

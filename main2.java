@@ -1,6 +1,8 @@
+import java.util.Scanner;
 
 public class main2 {
 	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
 //		System.out.println(Airline.getAircrafts().size());
 //		
 //		Airline.printAllFlights();
@@ -23,17 +25,24 @@ public class main2 {
 		
 		f2.delayFlight();
 		
-		Passenger p1 = new Economy("Me", "Myself", "CA23098", "01998763");
-		Passenger p2 = new Business("Yakup", "Yakamoz", "TR23098", "01998763");
-	
-		p2.addLuggage(new Luggage("suitcase", 30, p2));
-		p1.addLuggage(new Luggage("suitcase", 15, p1));
-		p1.addLuggage(new Luggage("suitcase", 17, p1));
+		Passenger p1 = new Passenger("Me", "Myself", "CA23098", "01998763");
+		Passenger p2 = new Passenger("Yakup", "Yakamoz", "TR23098", "01998763");
+//	
+//		Booking b1 = new Economy(p2, f1);
+		
+//		System.out.println(b1.getBookingId());
+
+		p1.books("AQ21", s);
+		
+//		System.out.println(p1.getBookings().get(0).getBookingId());
+		
+		System.out.println(f1.getBookings().get(0).getBookingId());
 
 		
-		Airline.printAllPassengers();
+		p1.checkIn("PS0BK0", s);
+		p1.printBookings();
 		
-		p2.printLuggages();
+		Airline.printAllFlights();
 	}
 
 }

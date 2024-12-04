@@ -1,14 +1,15 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
-public abstract class Passenger {
+public  class Passenger {
 	private static final String CODE  = "PS";
 	
-	protected String passengerId;
-	protected String firstName;
-	protected String lastName;
-	protected String passportNo;
-	protected String phone;
-	protected ArrayList<Luggage> luggages;
+	private String passengerId;
+	private String firstName;
+	private String lastName;
+	private String passportNo;
+	private String phone;
+	private ArrayList<Luggage> luggages;
 	private ArrayList<Booking> bookings;
 	
 	public Passenger(String firstName, String lastName, String passportNo, String phone) {
@@ -122,41 +123,66 @@ public abstract class Passenger {
 		System.out.println("=================");
 	}
 	
-	private void printBookings() {
-		System.out.println("=================");
-		for (Booking b: bookings) {
-			System.out.println(b);
-		}
-		System.out.println("=================");
-	}
 	
 	
-	public abstract void addLuggage(Luggage l);
+	public void addLuggageToList(Luggage l) {
+		this.luggages.add(l);
+	};
 
 	
-	public void books(int bookingId, Flight flight) {
-		Booking b = new Booking(bookingId, this, flight);
-		flight.addBooking(b);
-		
-		this.bookings.add(b);
-		
-		System.out.println(firstName + " " + lastName+ "Succesfully booked flight " + flight.getFlightNo() + " " + 
-					flight.getOrigin() + " - " + flight.getDestination());
-		
-		return;
-	}
+//	public void books(int bookingId, Flight flight) {
+//		Booking b = new Booking(bookingId, this, flight);
+//		flight.addBooking(b);
+//		
+//		this.bookings.add(b);
+//		
+//		System.out.println(firstName + " " + lastName+ "Succesfully booked flight " + flight.getFlightNo() + " " + 
+//					flight.getOrigin() + " - " + flight.getDestination());
+//		
+//		return;
+//	}
 	
-	public void books(int bookingId, String flightNo) {
+	public void books(String flightNo, Scanner s) {
 		
 		for (Flight f : Airline.getFlights()) {
 			if (f.getFlightNo().equals(flightNo)) {
-				Booking b = new Booking(bookingId, this, f);
-				f.addBooking(b);
+		
+				Booking b = null;
+				String passengerClass = "";
+				
+				do {
+					System.out.print("Choose class:\n1. First Class\n2. Business Class\n3. Economy Class\nOption: ");
+					
+					int bookingClass = s.nextInt();
+					
+					switch (bookingClass) {
+					case 1:
+						b = new First(this, f);
+						passengerClass = "First";
+						break;
+					case 2:
+						b = new Business(this, f);
+						passengerClass = "Business";
+						break;
+					case 3:
+						b = new Economy(this, f);
+						passengerClass = "Economy";
+						break;
+					default:
+						System.out.println("Invalid booking class");
+						b = null;
+						break;
+					}
+					
+				} while (b == null);
+				
 				
 				this.bookings.add(b); 
+				f.addBooking(b);
+				
 				
 				System.out.println(firstName + " " + lastName + " has succesfully booked flight " + f.getFlightNo() + ", " + 
-						f.getOrigin() + " - " + f.getDestination());
+						f.getOrigin() + " - " + f.getDestination() + " with " + passengerClass);
 				
 				return;
 			}
@@ -165,21 +191,68 @@ public abstract class Passenger {
 		System.out.println("The flight: " + flightNo + " doesnt exist");
 	}
 		
-	
-	
-	public void checkIn(String flightNo) {
-		for (Booking b : bookings) {
-			if (b.getFlight().getFlightNo().equalsIgnoreCase(flightNo)) {
-				b.checkIn();
-				
-				System.out.println(firstName + " " + lastName + " has checked in for flight " + b.getFlight().getFlightNo() + ", " + b.getFlight().getOrigin() + " - " + b.getFlight().getDestination());
-				return; // exit entire method
-			}
-		}
-		
-		// if the loop has serached thru the end of list it means that the if statement didnt get touched and the fligh actually desnt exist
-		System.out.println("No booking found for flight " + flightNo);
+	public void checkIn(String bookingId, Scanner s) {
+	    for (Booking b : this.bookings) {
+	        if (b.getBookingId().equalsIgnoreCase(bookingId)) {
+	            
+	            System.out.print("Do you want to add luggage? (Y/N): ");
+	            char option = s.next().toUpperCase().charAt(0);
+	            
+	            while (option == 'Y') {
+	                System.out.print("Enter luggage type (ex. suitcase, carry-on): ");
+	                s.nextLine(); // Clear the buffer
+	                String type = s.nextLine();
+	                
+	                double weight = 0;
+	                boolean validWeight = false;
+	                
+	                while (!validWeight) {
+	                    System.out.print("Enter weight (in kg): ");
+	                    
+	                    if (s.hasNextDouble()) {
+	                        weight = s.nextDouble();
+	                        s.nextLine(); // Clear the buffer
+	                        if (weight > 0) {
+	                            validWeight = true;
+	                        } else {
+	                            System.out.println("Weight must be a positive value.");
+	                        }
+	                    } else {
+	                        System.out.println("Invalid weight input. Please enter a numeric value.");
+	                        s.nextLine(); // Clear the invalid input
+	                    }
+	                }
+	                
+	                b.addLuggage(new Luggage(type, weight, this));
+	                System.out.println("Luggage added successfully.");
+	                
+	                System.out.print("Continue adding luggage? (Y/N): ");
+	                option = s.next().toUpperCase().charAt(0); // Normalize input to uppercase
+	            }
+	            
+	            b.checkIn();
+	            System.out.println("Checked in successfully.");
+	            return; // Exit the method after checking in
+	        }
+	    }
+	    
+	    System.out.println("Booking ID " + bookingId + " not found.");
 	}
+
+	
+//	public void checkIn(String flightNo) {
+//		for (Booking b : bookings) {
+//			if (b.getFlight().getFlightNo().equalsIgnoreCase(flightNo)) {
+//				b.checkIn();
+//				
+//				System.out.println(firstName + " " + lastName + " has checked in for flight " + b.getFlight().getFlightNo() + ", " + b.getFlight().getOrigin() + " - " + b.getFlight().getDestination());
+//				return; // exit entire method
+//			}
+//		}
+//		
+//		// if the loop has serached thru the end of list it means that the if statement didnt get touched and the fligh actually desnt exist
+//		System.out.println("No booking found for flight " + flightNo);
+//	}
 	
 	public void checkIn(Flight flight) {
 		for (Booking b : bookings) {
@@ -196,38 +269,19 @@ public abstract class Passenger {
 		System.out.println("No booking found for flight " + flight.getFlightNo() );
 	}
 	
-//	public void checkIn(Flight flight) {
-//		boolean found = false;
-//		
-//		for (Booking b : bookings) {
-//			if (b.getFlight().equals(flight)) {
-//				b.checkIn();
-//				
-//				System.out.println(firstName + " " + lastName + " has checked in for flight " + flight.getFlightNo());
-//				found = true;
-//				break; // exit loop
-//			}
-//		}
-//		
-//		if (!found) {
-//			System.out.println("No booking found for flight " + flight.getFlightNo() );
-//
-//		}
-//	}
+	public void printBookings() {
+		System.out.println("\n--------------------");
+		System.out.println("Booking Id\tFlight No\tRoute\t\tPassenger Class\t\tLuggages");
+		for (Booking b: bookings) {
+			b.print();
+		}
+		System.out.println("\n--------------------");
+	}
 	
 
 	public void print() {
-		String passengerClass = "";
-		if (this instanceof Economy) {
-			passengerClass = "Economy Class";
-		} else if (this instanceof Business) {
-			passengerClass = "Business Class";
-		} else if (this instanceof First) {
-			passengerClass = "First Class";
-		}
-		
 		System.out.println(passengerId + "\t\t" + firstName + "\t\t" + lastName + "\t\t" + passportNo + "\t\t" +
-						phone + "\t" + passengerClass + "\t\t" + luggages.size());
+						phone + "\t" + bookings.size());
 		
 	}
 	

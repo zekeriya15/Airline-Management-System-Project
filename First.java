@@ -1,18 +1,17 @@
 
-public class First extends Passenger {
+public class First extends Booking {
 	private final int MAX_LUGGAGE = 6;
 	private final double MAX_WEIGHT = 55;
 	private int numOfLuggage;
 	
-	public First(String firstName, String lastName, String passportNo, String phone) {
-		super(firstName, lastName, passportNo, phone);
+	public First(Passenger p, Flight f) {
+		super(p, f);
 	}
 	
-	@Override
 	public void addLuggage(Luggage l) {
 		double currentWeight = 0;
-		if (!luggages.isEmpty()) {
-			for (Luggage lu : luggages) {
+		if (!passenger.getLuggages().isEmpty()) {
+			for (Luggage lu : this.luggages) {
 				currentWeight += lu.getWeight();
 			}
 		}
@@ -21,6 +20,7 @@ public class First extends Passenger {
 		
 		if (numOfLuggage < MAX_LUGGAGE && totalWeight <= MAX_WEIGHT) {
 			this.luggages.add(l);
+			passenger.addLuggageToList(l);
 			this.numOfLuggage++;
 			
 			System.out.println("\nLuggage added successfully\n");

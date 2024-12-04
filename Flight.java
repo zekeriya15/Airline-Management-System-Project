@@ -183,7 +183,7 @@ public class Flight implements Comparable<Flight> {
 		
 		for (Passenger p : checkedInPassengers) {
 			System.out.println("=================");
-			p.print();
+//			p.print();
 			System.out.println("=================");
 		}
 	}
